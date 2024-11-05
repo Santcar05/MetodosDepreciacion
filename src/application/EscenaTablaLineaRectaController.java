@@ -5,46 +5,41 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class EscenaTablaLineaRectaController {
-	@FXML
-	private Label titulo;
-	@FXML
-	private TableView<TablaDepreciacionLineaRecta> tablaViewLineaRecta;
-	@FXML
-	private Button botonDescargarArchivo;
-	@FXML
-	private Button botonRegresarMenu;
+    @FXML
+    private Label titulo;
+    @FXML
+    private TableView<TablaDepreciacionLineaRecta> tablaViewLineaRecta;
+    @FXML
+    private Button botonDescargarArchivo;
+    @FXML
+    private Button botonRegresarMenu;
 
-	ArrayList<TablaDepreciacionLineaRecta> lista = new ArrayList<TablaDepreciacionLineaRecta>();
-	
+    ArrayList<TablaDepreciacionLineaRecta> lista = new ArrayList<TablaDepreciacionLineaRecta>();
 
-	
-	   // Este método se llama automáticamente después de que el FXML se ha cargado
+    // Este método se llama automáticamente después de que el FXML se ha cargado
     @FXML
     public void initialize() {
         // Crear y configurar columnas
         TableColumn<TablaDepreciacionLineaRecta, Integer> colAnio = new TableColumn<>("Año");
         colAnio.setCellValueFactory(new PropertyValueFactory<>("anio"));
 
-        TableColumn<TablaDepreciacionLineaRecta, Long> colCuota = createFormattedColumn("Cuota Depreciación", "cuotaDepreciacion");
-        TableColumn<TablaDepreciacionLineaRecta, Long> colDepAcum = createFormattedColumn("Depreciación Acumulada", "depreciacionAcumulada");
-        TableColumn<TablaDepreciacionLineaRecta, Long> colValorNeto = createFormattedColumn("Valor Neto", "valorNeto");
+        TableColumn<TablaDepreciacionLineaRecta, BigDecimal> colCuota = createFormattedColumn("Cuota Depreciación", "cuotaDepreciacion");
+        TableColumn<TablaDepreciacionLineaRecta, BigDecimal> colDepAcum = createFormattedColumn("Depreciación Acumulada", "depreciacionAcumulada");
+        TableColumn<TablaDepreciacionLineaRecta, BigDecimal> colValorNeto = createFormattedColumn("Valor Neto", "valorNeto");
 
         // Añadir columnas al TableView
         tablaViewLineaRecta.getColumns().addAll(colAnio, colCuota, colDepAcum, colValorNeto);
@@ -54,52 +49,50 @@ public class EscenaTablaLineaRectaController {
         tablaViewLineaRecta.setItems(data);
     }
 
-    private TableColumn<TablaDepreciacionLineaRecta, Long> createFormattedColumn(String title, String property) {
-        TableColumn<TablaDepreciacionLineaRecta, Long> column = new TableColumn<>(title);
+    private TableColumn<TablaDepreciacionLineaRecta, BigDecimal> createFormattedColumn(String title, String property) {
+        TableColumn<TablaDepreciacionLineaRecta, BigDecimal> column = new TableColumn<>(title);
         column.setCellValueFactory(new PropertyValueFactory<>(property));
-        column.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Long>() {
+        column.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<BigDecimal>() {
             @Override
-            public String toString(Long value) {
-                return String.format("%.3f", value.doubleValue() / 1000); // Formato con tres decimales
+            public String toString(BigDecimal value) {
+                return String.format("%.3f", value.doubleValue()); // Formato con tres decimales
             }
 
             @Override
-            public Long fromString(String string) {
-                return (long) (Double.parseDouble(string) * 1000); // Volver a convertir a long
+            public BigDecimal fromString(String string) {
+                return new BigDecimal(string); // Conversión de String a BigDecimal
             }
         }));
         return column;
     }
-	
-	
-	
-	public Label getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(Label titulo) {
-		this.titulo = titulo;
-	}
-	public TableView<TablaDepreciacionLineaRecta> getTablaViewLineaRecta() {
-		return tablaViewLineaRecta;
-	}
-	public void setTablaViewLineaRecta(TableView<TablaDepreciacionLineaRecta> tablaViewLineaRecta) {
-		this.tablaViewLineaRecta = tablaViewLineaRecta;
-	}
-	public Button getBotonDescargarArchivo() {
-		return botonDescargarArchivo;
-	}
-	public void setBotonDescargarArchivo(Button botonDescargarArchivo) {
-		this.botonDescargarArchivo = botonDescargarArchivo;
-	}
-	public Button getBotonRegresarMenu() {
-		return botonRegresarMenu;
-	}
-	public void setBotonRegresarMenu(Button botonRegresarMenu) {
-		this.botonRegresarMenu = botonRegresarMenu;
-	}
-	public ArrayList<TablaDepreciacionLineaRecta> getLista() {
-		return lista;
-	}
+
+    public Label getTitulo() {
+        return titulo;
+    }
+    public void setTitulo(Label titulo) {
+        this.titulo = titulo;
+    }
+    public TableView<TablaDepreciacionLineaRecta> getTablaViewLineaRecta() {
+        return tablaViewLineaRecta;
+    }
+    public void setTablaViewLineaRecta(TableView<TablaDepreciacionLineaRecta> tablaViewLineaRecta) {
+        this.tablaViewLineaRecta = tablaViewLineaRecta;
+    }
+    public Button getBotonDescargarArchivo() {
+        return botonDescargarArchivo;
+    }
+    public void setBotonDescargarArchivo(Button botonDescargarArchivo) {
+        this.botonDescargarArchivo = botonDescargarArchivo;
+    }
+    public Button getBotonRegresarMenu() {
+        return botonRegresarMenu;
+    }
+    public void setBotonRegresarMenu(Button botonRegresarMenu) {
+        this.botonRegresarMenu = botonRegresarMenu;
+    }
+    public ArrayList<TablaDepreciacionLineaRecta> getLista() {
+        return lista;
+    }
     public void setLista(ArrayList<TablaDepreciacionLineaRecta> lista) {
         this.lista = lista;
         System.out.println("La lista tiene " + lista.size());
@@ -107,27 +100,27 @@ public class EscenaTablaLineaRectaController {
         data.addAll(lista);
         tablaViewLineaRecta.setItems(data);
     }
-	// Event Listener on Button[#botonDescargarArchivo].onAction
-	@FXML
-	public void descargarArchivo(ActionEvent event) {
-		// TODO Autogenerated
-	}
-	// Event Listener on Button[#botonRegresarMenu].onAction
-	@FXML
-	public void devolverMenu(ActionEvent event) {
-		try {
-			// Cargar el archivo FXML de la segunda escena
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("EscenaPrincipal.fxml"));
-			Parent escena2Root = loader.load();
+    // Event Listener on Button[#botonDescargarArchivo].onAction
+    @FXML
+    public void descargarArchivo(ActionEvent event) {
+        // TODO Autogenerated
+    }
+    // Event Listener on Button[#botonRegresarMenu].onAction
+    @FXML
+    public void devolverMenu(ActionEvent event) {
+        try {
+            // Cargar el archivo FXML de la segunda escena
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EscenaPrincipal.fxml"));
+            Parent escena2Root = loader.load();
 
-			// Obtener el stage actual a partir del botón presionado
-			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            // Obtener el stage actual a partir del botón presionado
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 
-			// Crear una nueva escena con el diseño de Escena2 y asignarla al stage
-			Scene escena2 = new Scene(escena2Root);
-			stage.setScene(escena2);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+            // Crear una nueva escena con el diseño de Escena2 y asignarla al stage
+            Scene escena2 = new Scene(escena2Root);
+            stage.setScene(escena2);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

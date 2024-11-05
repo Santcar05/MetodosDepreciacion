@@ -20,7 +20,7 @@ public class MainFX extends Application {
             Scene scene = new Scene(root, 400, 400);
 
             // Configurar el título y la escena del escenario principal
-            primaryStage.setTitle("Mi primer Proyecto FX");
+            primaryStage.setTitle("MÉTODOS DE DEPRECIACIÓN");
             primaryStage.setScene(scene);
             primaryStage.show();
 		} catch(Exception e) {

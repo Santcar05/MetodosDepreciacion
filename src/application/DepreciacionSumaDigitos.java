@@ -1,74 +1,84 @@
 package application;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class DepreciacionSumaDigitos {
-	
-	private long valorActivo;
-	private long valorResidual;
-	private int vidaUtil;
-	private TablaDepreciacionSumaDigitos TDSD;
-	
-	public DepreciacionSumaDigitos() {
-		
-	}
 
-	public long getValorActivo() {
-		return valorActivo;
-	}
+    private BigDecimal valorActivo;       // Cambiar de long a BigDecimal
+    private BigDecimal valorResidual;     // Cambiar de long a BigDecimal
+    private int vidaUtil;
+    private TablaDepreciacionSumaDigitos TDSD;
 
-	public void setValorActivo(long valorActivo) {
-		this.valorActivo = valorActivo;
-	}
+    public DepreciacionSumaDigitos() {
+        // Inicializar valores por defecto si es necesario
+        this.valorActivo = BigDecimal.ZERO;
+        this.valorResidual = BigDecimal.ZERO;
+    }
 
-	public long getValorResidual() {
-		return valorResidual;
-	}
+    public BigDecimal getValorActivo() {
+        return valorActivo;
+    }
 
-	public void setValorResidual(long valorResidual) {
-		this.valorResidual = valorResidual;
-	}
+    public void setValorActivo(BigDecimal valorActivo) {
+        this.valorActivo = valorActivo;
+    }
 
-	public int getVidaUtil() {
-		return vidaUtil;
-	}
+    public BigDecimal getValorResidual() {
+        return valorResidual;
+    }
 
-	public void setVidaUtil(int vidaUtil) {
-		this.vidaUtil = vidaUtil;
-	}
+    public void setValorResidual(BigDecimal valorResidual) {
+        this.valorResidual = valorResidual;
+    }
 
-	public TablaDepreciacionSumaDigitos getTDSD() {
-		return TDSD;
-	}
+    public int getVidaUtil() {
+        return vidaUtil;
+    }
 
-	public void setTDSD(TablaDepreciacionSumaDigitos tDSD) {
-		TDSD = tDSD;
-	}
-	
-	public ArrayList<TablaDepreciacionSumaDigitos> calcularSumaDigitos() {
+    public void setVidaUtil(int vidaUtil) {
+        this.vidaUtil = vidaUtil;
+    }
+
+    public TablaDepreciacionSumaDigitos getTDSD() {
+        return TDSD;
+    }
+
+    public void setTDSD(TablaDepreciacionSumaDigitos tDSD) {
+        TDSD = tDSD;
+    }
+
+
+
+    public ArrayList<TablaDepreciacionSumaDigitos> calcularSumaDigitos() {
         ArrayList<TablaDepreciacionSumaDigitos> resultados = new ArrayList<>();
-        double factor;
-        long depreciacionAcumulada = 0; // Inicializar acumulador
-        long valorNeto;
-        long cuotaDepreciacion;
+        BigDecimal factor;
+        BigDecimal depreciacionAcumulada = BigDecimal.ZERO; // Inicializar acumulador
+        BigDecimal valorNeto;
+        BigDecimal cuotaDepreciacion;
 
         // Calcular para cada año de la vida útil
         for (int i = 0; i < vidaUtil; i++) {
-            factor = (double) (vidaUtil - i) / (vidaUtil * (vidaUtil + 1) / 2.0);
-            System.out.println(factor);
-            long valorActivoMenosResidual = valorActivo - valorResidual;
-            cuotaDepreciacion = (long) (valorActivoMenosResidual * factor);
-            depreciacionAcumulada += cuotaDepreciacion;
-            
-            valorNeto = valorActivo - depreciacionAcumulada;
+            // Calcular el factor correctamente usando BigDecimal
+            factor = BigDecimal.valueOf((double)(vidaUtil - i) / (vidaUtil * (vidaUtil + 1) / 2.0));
+
+            // Calcular la cuota de depreciación y el valor neto
+            BigDecimal valorActivoMenosResidual = valorActivo.subtract(valorResidual);
+            cuotaDepreciacion = valorActivoMenosResidual.multiply(factor);
+
+            // Acumular la depreciación
+            depreciacionAcumulada = depreciacionAcumulada.add(cuotaDepreciacion);
+            valorNeto = valorActivo.subtract(depreciacionAcumulada);
+
+            // Calcular el porcentaje (ejemplo de cálculo, ajuste según sea necesario)
+            float porcentaje = factor.floatValue() * 100; // Convertir a porcentaje
 
             // Crear un nuevo objeto y añadirlo a la lista
             TablaDepreciacionSumaDigitos registro = new TablaDepreciacionSumaDigitos(
-                    i + 1,(double) factor, valorActivoMenosResidual, cuotaDepreciacion, depreciacionAcumulada, valorNeto);
+                    i + 1, factor.doubleValue(), porcentaje, cuotaDepreciacion, depreciacionAcumulada, valorNeto);
             resultados.add(registro);
         }
-        
+
         return resultados;
     }
-	
 }
