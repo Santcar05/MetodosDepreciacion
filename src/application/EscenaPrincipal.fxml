@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.EscenaPrincipalController">
+   <children>
+      <Label fx:id="titulo" alignment="CENTER" layoutX="9.0" layoutY="14.0" prefHeight="81.0" prefWidth="583.0" text="MÉTODOS DE DEPRECIACIÓN">
+         <font>
+            <Font name="Yu Gothic Bold" size="32.0" />
+         </font>
+      </Label>
+      <Button fx:id="lineaRecta" alignment="CENTER" layoutX="152.0" layoutY="120.0" mnemonicParsing="false" onAction="#activarLineaRecta" prefHeight="40.0" prefWidth="297.0" text="LINEA RECTA">
+         <font>
+            <Font name="Yu Gothic Regular" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="sumaDigitos" alignment="CENTER" layoutX="153.0" layoutY="180.0" mnemonicParsing="false" onAction="#activarSumaDigitos" prefHeight="40.0" prefWidth="297.0" text="SUMA DE DÍGITOS">
+         <font>
+            <Font name="Yu Gothic Regular" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="reduccionSaldos" alignment="CENTER" layoutX="153.0" layoutY="239.0" mnemonicParsing="false" onAction="#activarReduccionSaldos" prefHeight="40.0" prefWidth="297.0" text="REDUCCIÓN DE SALDOS">
+         <font>
+            <Font name="Yu Gothic Regular" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="unidadesProducidas" alignment="CENTER" layoutX="153.0" layoutY="304.0" mnemonicParsing="false" onAction="#activarUnidadesProducidas" prefHeight="40.0" prefWidth="297.0" text="UNIDADES PRODUCIDAS">
+         <font>
+            <Font name="Yu Gothic Regular" size="22.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
