@@ -1,6 +1,7 @@
 package application;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class DepreciacionReduccionSaldos {
@@ -47,40 +48,43 @@ public class DepreciacionReduccionSaldos {
 	}
 
 	public ArrayList<TablaDepreciacionReduccionSaldos> calcularReduccionSaldos() {
-        ArrayList<TablaDepreciacionReduccionSaldos> resultados = new ArrayList<>();
-        BigDecimal tasaDepreciacion;
-        BigDecimal valorSinDepreciar = valorActivo;
-        BigDecimal cuotaDepreciacion =  null;
-        BigDecimal depreciacionAcumulada = BigDecimal.ZERO;
-        BigDecimal valorNeto;
+	    ArrayList<TablaDepreciacionReduccionSaldos> resultados = new ArrayList<>();
+	    BigDecimal valorSinDepreciar = valorActivo;
+	    BigDecimal cuotaDepreciacion = BigDecimal.ZERO;
+	    BigDecimal depreciacionAcumulada = BigDecimal.ZERO;
+	    BigDecimal valorNeto;
 
-        // Calcular la tasa de depreciación base
-        double base = valorResidual.divide(valorActivo, BigDecimal.ROUND_HALF_UP).doubleValue();
-        tasaDepreciacion = BigDecimal.valueOf(1.0).subtract(BigDecimal.valueOf(Math.pow(base, 1.0 / vidaUtil)));
+	    // Calcular la tasa de depreciación usando BigDecimal en todas las operaciones
+	    BigDecimal base = valorResidual.divide(valorActivo, 10, RoundingMode.HALF_UP); // precisión de 10 decimales
+	    BigDecimal exponent = BigDecimal.valueOf(1.0 / vidaUtil);
+	    BigDecimal tasaDepreciacion = BigDecimal.ONE.subtract(
+	            BigDecimal.valueOf(Math.pow(base.doubleValue(), exponent.doubleValue()))
+	    );
 
-        // Calcular para cada año de la vida útil
-        for (int i = 0; i < vidaUtil; i++) {
-            // Hallar valor sin depreciar
-            valorSinDepreciar = valorSinDepreciar.subtract(cuotaDepreciacion != null ? cuotaDepreciacion : BigDecimal.ZERO);
-            
-            // Hallar cuota de depreciación
-            cuotaDepreciacion = valorSinDepreciar.multiply(tasaDepreciacion);
-            
-            // Acumular la depreciación
-            depreciacionAcumulada = depreciacionAcumulada.add(cuotaDepreciacion);
-            
-            // Calcular el valor neto
-            valorNeto = valorActivo.subtract(depreciacionAcumulada);
-            
-            // Calcular porcentaje de depreciación
-            double porcentaje = tasaDepreciacion.doubleValue() * 100; // Convertir a porcentaje
-            
-            // Crear un nuevo registro para la tabla de depreciación
-            TablaDepreciacionReduccionSaldos registro = new TablaDepreciacionReduccionSaldos(
-                    i + 1, tasaDepreciacion.doubleValue(), porcentaje, cuotaDepreciacion, depreciacionAcumulada, valorNeto);
-            resultados.add(registro);
-        }
+	    // Calcular para cada año de la vida útil
+	    for (int i = 0; i < vidaUtil; i++) {
+	        // Hallar valor sin depreciar
+	        valorSinDepreciar = valorSinDepreciar.subtract(cuotaDepreciacion);
 
-        return resultados;
-    }
+	        // Hallar cuota de depreciación
+	        cuotaDepreciacion = valorSinDepreciar.multiply(tasaDepreciacion).setScale(2, RoundingMode.HALF_UP);
+
+	        // Acumular la depreciación
+	        depreciacionAcumulada = depreciacionAcumulada.add(cuotaDepreciacion);
+
+	        // Calcular el valor neto
+	        valorNeto = valorActivo.subtract(depreciacionAcumulada).setScale(2, RoundingMode.HALF_UP);
+
+	        // Calcular porcentaje de depreciación
+	        double porcentaje = tasaDepreciacion.multiply(BigDecimal.valueOf(100)).doubleValue();
+
+	        // Crear un nuevo registro para la tabla de depreciación
+	        TablaDepreciacionReduccionSaldos registro = new TablaDepreciacionReduccionSaldos(
+	                i + 1, tasaDepreciacion.doubleValue(), porcentaje, cuotaDepreciacion, depreciacionAcumulada, valorNeto);
+	        resultados.add(registro);
+	    }
+
+	    return resultados;
+	}
+
 }

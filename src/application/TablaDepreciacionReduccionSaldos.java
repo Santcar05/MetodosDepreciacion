@@ -9,6 +9,8 @@ public class TablaDepreciacionReduccionSaldos {
     private BigDecimal cuotaDepreciacion;  // Cuota de depreciación
     private BigDecimal depreciacionAcumulada; // Depreciación acumulada
     private BigDecimal valorNeto;       // Valor neto después de la depreciación
+    
+    
 	
     public TablaDepreciacionReduccionSaldos(int anio, double tasaDepreciacion, double porcentaje,
 			BigDecimal cuotaDepreciacion, BigDecimal depreciacionAcumulada, BigDecimal valorNeto) {
